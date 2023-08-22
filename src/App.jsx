@@ -86,6 +86,7 @@ export const ChatMessage = (props) => {
     const messageRef = doc(databaseApp, "messages", props.message.id);
     await deleteDoc(messageRef);  
     location.reload();
+    //pao
   }
 
   return (
