@@ -23,15 +23,18 @@ export const ChatRoom = () => {
   const messagesRef = collection(databaseApp, "messages");
 
   const [messages, setMessage] = useState()
+  
+  const getUsers = async () => {
+    const data = await getDocs(messagesRef);
+  
+    setMessage(data.docs.map(doc => ({...doc.data(), id: doc.id})))
+    console.log(messages)
+  };
 
   useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(messagesRef);
-    
-      setMessage(data.docs.map(doc => ({...doc.data(), id: doc.id})))
-    };
     getUsers();
-  });
+  }, []);
+
 
   const [formValue, setFormValue] = useState("");
   const sendMessage = async (e) => {
@@ -45,6 +48,8 @@ export const ChatRoom = () => {
     });
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
+
+    getUsers();
   }
 
   return (
@@ -79,7 +84,8 @@ export const ChatMessage = (props) => {
     console.log(messagesRef)
     
     const messageRef = doc(databaseApp, "messages", props.message.id);
-    await deleteDoc(messageRef);    
+    await deleteDoc(messageRef);  
+    location.reload();
   }
 
   return (
