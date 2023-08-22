@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { addDoc, collection, limit, orderBy, query, serverTimestamp, doc, deleteDoc, getFirestore, getDoc, getDocs, } from "firebase/firestore";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import "./App.css";
 import { auth, databaseApp } from "./services/firebaseConfig";
-import { getAuth } from "firebase/auth";
-import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from  'react-native-fetch-blob';
 
 export const App = () => {
   const [user] = useAuthState(auth);
