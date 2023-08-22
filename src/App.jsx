@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
-import { addDoc, collection, limit, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
+import { addDoc, collection, limit, orderBy, query, serverTimestamp, doc, deleteDoc, getFirestore, getDoc, getDocs, } from "firebase/firestore";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import "./App.css";
 import { auth, databaseApp } from "./services/firebaseConfig";
 import { getAuth } from "firebase/auth";
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from  'react-native-fetch-blob';
 
 export const App = () => {
   const [user] = useAuthState(auth);
@@ -23,8 +25,17 @@ export const ChatRoom = () => {
 
   const dummy = useRef(); 
   const messagesRef = collection(databaseApp, "messages");
-  const QueryMessages = query(messagesRef, orderBy("createdAt"), limit(25));
-  const [messages] = useCollectionData(QueryMessages, { idField: "id" });
+
+  const [messages, setMessage] = useState()
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(messagesRef);
+    
+      setMessage(data.docs.map(doc => ({...doc.data(), id: doc.id})))
+    };
+    getUsers();
+  });
 
   const [formValue, setFormValue] = useState("");
   const sendMessage = async (e) => {
@@ -62,14 +73,27 @@ export const ChatRoom = () => {
 
 export const ChatMessage = (props) => {
 
-  const { text, uid, photoURL } = props.message;
+  const messagesRef = collection(databaseApp, "messages");
 
+  const { text, uid, photoURL } = props.message;
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
+  const deleteMessage = async (e) => {
+    e.preventDefault();
+    console.log(props.message)
+    console.log(messagesRef)
+    
+    const messageRef = doc(databaseApp, "messages", props.message.id);
+    await deleteDoc(messageRef);    
+  }
 
   return (
+
     <div className={`message ${messageClass}`}>
       <img src={photoURL} alt="Avatar" />
       <p>{text}</p>
+      <button onClick={deleteMessage}> x </button>
+      
+
     </div>
   ); 
 };
