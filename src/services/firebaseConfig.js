@@ -1,18 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
-
 const firebaseConfig = {
-  apiKey: "AIzaSyBf-FakaX7bZ7licFIDfRMd5F_doGxWNDQ",
-  authDomain: "chat-efd82.firebaseapp.com",
-  projectId: "chat-efd82",
-  storageBucket: "chat-efd82.appspot.com",
-  messagingSenderId: "464276815837",
-  appId: "1:464276815837:web:c4262e19953ecdf9728034",
-  measurementId: "G-W2QMMKJCEF"
+  apiKey: "AIzaSyAJVcfBHSvl56K7M2lCb8-dC7ib0RtTfsg",
+  authDomain: "bdtr-4a2a5.firebaseapp.com",
+  databaseURL: "https://bdtr-4a2a5-default-rtdb.firebaseio.com",
+  projectId: "bdtr-4a2a5",
+  storageBucket: "bdtr-4a2a5.appspot.com",
+  messagingSenderId: "961230166210",
+  appId: "1:961230166210:web:a2932d18de6e387be3435b",
+  measurementId: "G-JSCY83C584"
 };
-
-
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const databaseApp = getFirestore(app);
